@@ -323,7 +323,7 @@ end
 
 local LocalPlayer = Players.LocalPlayer
 
-local function PlayEmote(name: string, id: IntValue)
+local function PlayEmote(name: string,id: IntValue)
 	ScreenGui.Enabled = false
 	SearchBar.Text = ""
 	local Humanoid = LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
@@ -380,9 +380,16 @@ while true do
 end
 
 --unreleased emotes
-AddEmote("Arm Wave", 5915773155)
-AddEmote("Head Banging", 5915779725)
-AddEmote("Face Calisthenics", 9830731012)
+AddEmote("Arm Wave",5915773155)
+AddEmote("Head Banging",5915779725)
+AddEmote("Face Calisthenics",9830731012)
+AddEmote("Boogie Down",16094715433)
+AddEmote("Free Flow",16094717768)
+AddEmote("Breakdance/breakdown",16094819164)
+AddEmote("Scenario",16094722305)
+AddEmote("Swing",16094821788)
+AddEmote("Twisted",16094825852)
+AddEmote("Electro Shuffle",16094828990)
 
 --wait for emotes to finish loading
 
