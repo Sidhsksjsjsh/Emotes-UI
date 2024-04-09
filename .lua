@@ -253,6 +253,10 @@ function obfuscatedUI()
   ScreenGui.Enabled = not ScreenGui.Enabled
 end
 
+function kontol(tgl)
+	ScreenGui.Enabled = tgl
+end
+
 ContextActionService:BindCoreActionAtPriority(
 	"Emote Menu",
 	openemotes,
