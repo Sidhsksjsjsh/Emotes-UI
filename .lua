@@ -257,13 +257,18 @@ function kontol(tgl)
 	ScreenGui.Enabled = tgl
 end
 
-ContextActionService:BindCoreActionAtPriority(
+--[[ContextActionService:BindCoreActionAtPriority(
 	"Emote Menu",
 	openemotes,
 	true,
 	2001,
 	Enum.KeyCode.Comma
-)
+)]]
+
+ContextActionService:BindAction("Emote Menu",openemotes,true,Enum.KeyCode.Comma)
+ContextActionService:SetImage("Emote Menu","rbxassetid://13030062874")
+ContextActionService:SetTitle("Emote Menu","Emotes")
+ContextActionService:SetDescription("Emote Menu","Use this if u cant afford an emote")
 
 local inputconnect
 ScreenGui:GetPropertyChangedSignal("Enabled"):Connect(function()
