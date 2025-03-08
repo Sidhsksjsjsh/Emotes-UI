@@ -13,7 +13,7 @@ local UserInputService = game:GetService("UserInputService")
 
 local Emotes = {}
 local LoadedEmotes = {}
-local function AddEmote(name: string,id: IntValue,price: IntValue?)
+local function AddEmote(name: string,id: IntValue,price: IntValue)
 	LoadedEmotes[id] = false
 	task.spawn(function()
 		if not (name and id) then
