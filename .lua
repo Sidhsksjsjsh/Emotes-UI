@@ -165,12 +165,12 @@ local function createsort(order, text, sort)
 	return CreatedSort
 end
 
-createsort(1, "Recently Updated First", "recentfirst")
-createsort(2, "Recently Updated Last", "recentlast")
-createsort(3, "Alphabetically First", "alphabeticfirst")
-createsort(4, "Alphabetically Last", "alphabeticlast")
-createsort(5, "Highest Price", "highestprice")
-createsort(6, "Lowest Price", "lowestprice")
+createsort(1,"Recently Updated First","recentfirst")
+createsort(2,"Recently Updated Last","recentlast")
+createsort(3,"Alphabetically First","alphabeticfirst")
+createsort(4,"Alphabetically Last","alphabeticlast")
+createsort(5,"Highest Price","highestprice")
+createsort(6,"Lowest Price","lowestprice")
 
 local SortButton = Instance.new("TextButton")
 SortButton.BorderSizePixel = 0
@@ -345,18 +345,15 @@ local function PlayEmote(name: string,id: IntValue)
 			Humanoid:PlayEmoteAndGetAnimTrackById(id)
 		end)
 		if not succ then
-			Description:AddEmote(name, id)
+			Description:AddEmote(name,id)
 			Humanoid:PlayEmoteAndGetAnimTrackById(id)
 		end
 	else
-		SendNotification(
-			"r6? lol",
-			"you gotta be r15 dude"
-		)
+		SendNotification("r6? lol","you gotta be r15 dude")
 	end
 end
 
-local function WaitForChildOfClass(parent, class)
+local function WaitForChildOfClass(parent,class)
 	local child = parent:FindFirstChildOfClass(class)
 	while not child or child.ClassName ~= class do
 		child = parent.ChildAdded:Wait()
@@ -364,22 +361,23 @@ local function WaitForChildOfClass(parent, class)
 	return child
 end
 
+local function Request()
+	local success,Response = pcall(function()
+		return game:HttpGetAsync("https://catalog.roblox.com/v1/search/items/details?Category=12&Subcategory=39&SortType=1&SortAggregation=&limit=30&IncludeNotForSale=true&cursor=".. Cursor)
+	end)
+	if not success then
+		task.wait(10)
+		return Request()
+	end
+	return Response
+end
+
 local Cursor = ""
 while true do
-	local function Request()
-		local success, Response = pcall(function()
-			return game:HttpGetAsync("https://catalog.roblox.com/v1/search/items/details?Category=12&Subcategory=39&SortType=1&SortAggregation=&limit=30&IncludeNotForSale=true&cursor=".. Cursor)
-		end)
-		if not success then
-			task.wait(10)
-			return Request()
-		end
-		return Response
-	end
 	local Response = Request()
 	local Body = HttpService:JSONDecode(Response)
 	for i,v in pairs(Body.data) do
-		AddEmote(v.name, v.id, v.price)
+		AddEmote(v.name,v.id,v.price)
 	end
 	if Body.nextPageCursor ~= nil then
 		Cursor = Body.nextPageCursor
@@ -416,44 +414,49 @@ end
 Loading:Destroy()
 
 --sorting options setup
-table.sort(Emotes, function(a, b)
+table.sort(Emotes,function(a,b)
 	return a.lastupdated > b.lastupdated
 end)
 for i,v in pairs(Emotes) do
 	v.sort.recentfirst = i
 end
 
-table.sort(Emotes, function(a, b)
+table.sort(Emotes,function(a,b)
 	return a.lastupdated < b.lastupdated
 end)
+
 for i,v in pairs(Emotes) do
 	v.sort.recentlast = i
 end
 
-table.sort(Emotes, function(a, b)
+table.sort(Emotes,function(a,b)
 	return a.name:lower() < b.name:lower()
 end)
+
 for i,v in pairs(Emotes) do
 	v.sort.alphabeticfirst = i
 end
 
-table.sort(Emotes, function(a, b)
+table.sort(Emotes,function(a,b)
 	return a.name:lower() > b.name:lower()
 end)
+
 for i,v in pairs(Emotes) do
 	v.sort.alphabeticlast = i
 end
 
-table.sort(Emotes, function(a, b)
+table.sort(Emotes,function(a,b)
 	return a.price < b.price
 end)
+
 for i,v in pairs(Emotes) do
 	v.sort.lowestprice = i
 end
 
-table.sort(Emotes, function(a, b)
+table.sort(Emotes,function(a,b)
 	return a.price > b.price
 end)
+
 for i,v in pairs(Emotes) do
 	v.sort.highestprice = i
 end
@@ -479,6 +482,7 @@ for i,name in pairs(FavoritedEmotes) do
 		end
 	end
 end
+
 if #UpdatedFavorites ~= 0 then
 	FavoritedEmotes = UpdatedFavorites
 	writefile("FavoritedEmotes.txt", HttpService:JSONEncode(FavoritedEmotes))
@@ -506,8 +510,8 @@ local function CharacterAdded(Character)
 	random:SetAttribute("name", "")
 	Corner:Clone().Parent = random
 	random.MouseButton1Click:Connect(function()
-		local randomemote = Emotes[math.random(1, #Emotes)]
-		PlayEmote(randomemote.name, randomemote.id)
+		local randomemote = Emotes[math.random(1,#Emotes)]
+		PlayEmote(randomemote.name,randomemote.id)
 	end)
 	random.MouseEnter:Connect(function()
 		EmoteName.Text = "Random"
@@ -516,10 +520,10 @@ local function CharacterAdded(Character)
 	for i,Emote in pairs(Emotes) do
 		Description:AddEmote(Emote.name, Emote.id)
 		local EmoteButton = Instance.new("ImageButton")
-		local IsFavorited = table.find(FavoritedEmotes, Emote.id)
+		local IsFavorited = table.find(FavoritedEmotes,Emote.id)
 		EmoteButton.LayoutOrder = Emote.sort[CurrentSort] + ((IsFavorited and 0) or #Emotes)
 		EmoteButton.Name = Emote.id
-		EmoteButton:SetAttribute("name", Emote.name)
+		EmoteButton:SetAttribute("name",Emote.name)
 		Corner:Clone().Parent = EmoteButton
 		EmoteButton.Image = Emote.icon
 		EmoteButton.BackgroundTransparency = 0.5
@@ -530,11 +534,11 @@ local function CharacterAdded(Character)
 		EmoteNumber.Name = "number"
 		EmoteNumber.TextScaled = true
 		EmoteNumber.BackgroundTransparency = 1
-		EmoteNumber.TextColor3 = Color3.new(1, 1, 1)
+		EmoteNumber.TextColor3 = Color3.new(1,1,1)
 		EmoteNumber.BorderSizePixel = 0
-		EmoteNumber.AnchorPoint = Vector2.new(0.5, 0.5)
-		EmoteNumber.Size = UDim2.new(0.2, 0, 0.2, 0)
-		EmoteNumber.Position = UDim2.new(0.1, 0, 0.9, 0)
+		EmoteNumber.AnchorPoint = Vector2.new(0.5,0.5)
+		EmoteNumber.Size = UDim2.new(0.2,0, 0.2,0)
+		EmoteNumber.Position = UDim2.new(0.1,0,0.9,0)
 		EmoteNumber.Text = Emote.sort[CurrentSort]
 		EmoteNumber.TextXAlignment = Enum.TextXAlignment.Center
 		EmoteNumber.TextYAlignment = Enum.TextYAlignment.Center
@@ -544,39 +548,39 @@ local function CharacterAdded(Character)
 		EmoteNumber.Parent = EmoteButton
 		EmoteButton.Parent = Frame
 		EmoteButton.MouseButton1Click:Connect(function()
-			PlayEmote(Emote.name, Emote.id)
+			PlayEmote(Emote.name,Emote.id)
 		end)
 		EmoteButton.MouseEnter:Connect(function()
 			EmoteName.Text = Emote.name
 		end)
 		local Favorite = Instance.new("ImageButton")
 		Favorite.Name = "favorite"
-		if table.find(FavoritedEmotes, Emote.id) then
+		if table.find(FavoritedEmotes,Emote.id) then
 			Favorite.Image = FavoriteOn
 		else
 			Favorite.Image = FavoriteOff
 		end
-		Favorite.AnchorPoint = Vector2.new(0.5, 0.5)
-		Favorite.Size = UDim2.new(0.2, 0, 0.2, 0)
-		Favorite.Position = UDim2.new(0.9, 0, 0.9, 0)
+		Favorite.AnchorPoint = Vector2.new(0.5,0.5)
+		Favorite.Size = UDim2.new(0.2,0,0.2,0)
+		Favorite.Position = UDim2.new(0.9,0,0.9,0)
 		Favorite.BorderSizePixel = 0
 		Favorite.BackgroundTransparency = 1
 		Favorite.Parent = EmoteButton
 		Favorite.MouseButton1Click:Connect(function()
-			local index = table.find(FavoritedEmotes, Emote.id)
+			local index = table.find(FavoritedEmotes,Emote.id)
 			if index then
-				table.remove(FavoritedEmotes, index)
+				table.remove(FavoritedEmotes,index)
 				Favorite.Image = FavoriteOff
 				EmoteButton.LayoutOrder = Emote.sort[CurrentSort] + #Emotes
 			else
-				table.insert(FavoritedEmotes, Emote.id)
+				table.insert(FavoritedEmotes,Emote.id)
 				Favorite.Image = FavoriteOn
 				EmoteButton.LayoutOrder = Emote.sort[CurrentSort]
 			end
-			writefile("FavoritedEmotes.txt", HttpService:JSONEncode(FavoritedEmotes))
+			writefile("FavoritedEmotes.txt",HttpService:JSONEncode(FavoritedEmotes))
 		end)
 	end
-	for i=1,9 do
+	for i = 1,9 do
 		local EmoteButton = Instance.new("Frame")
 		EmoteButton.LayoutOrder = 2147483647
 		EmoteButton.Name = "filler"
