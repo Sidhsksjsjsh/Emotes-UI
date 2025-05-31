@@ -361,18 +361,18 @@ local function WaitForChildOfClass(parent,class)
 	return child
 end
 
+local Cursor = ""
 local function Request()
 	local success,Response = pcall(function()
-		return game:HttpGetAsync("https://catalog.roblox.com/v1/search/items/details?Category=12&Subcategory=39&SortType=1&SortAggregation=&limit=30&IncludeNotForSale=true&cursor=".. Cursor)
+		return game:HttpGetAsync("https://catalog.roblox.com/v1/search/items/details?Category=12&Subcategory=39&SortType=1&SortAggregation=&limit=30&IncludeNotForSale=true&cursor=" .. Cursor)
 	end)
 	if not success then
-		task.wait(10)
+		task.wait(1)
 		return Request()
 	end
 	return Response
 end
 
-local Cursor = ""
 while true do
 	local Response = Request()
 	local Body = HttpService:JSONDecode(Response)
