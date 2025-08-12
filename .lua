@@ -367,7 +367,7 @@ local function Request()
 		return game:HttpGetAsync("https://catalog.roblox.com/v1/search/items/details?Category=12&Subcategory=39&SortType=1&SortAggregation=&limit=30&IncludeNotForSale=true&cursor=" .. Cursor)
 	end)
 	if not success then
-		task.wait(1)
+		task.wait(0.1)
 		return Request()
 	end
 	return Response
@@ -549,6 +549,9 @@ local function CharacterAdded(Character)
 		EmoteButton.Parent = Frame
 		EmoteButton.MouseButton1Click:Connect(function()
 			PlayEmote(Emote.name,Emote.id)
+			if TurtleFlags.EmoteSpy == true then
+				TurtleRemoteEvent:Fire("CONSOLE LOG",`[ Emote Viewer ] {Emote.name} : {Emote.id}`)
+			end
 		end)
 		EmoteButton.MouseEnter:Connect(function()
 			EmoteName.Text = Emote.name
