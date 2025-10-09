@@ -368,23 +368,32 @@ local function Request()
 	end)
 	if not success then
 		task.wait(0.1)
+		Loading.Text = "Error Occurred.\n" .. Response
 		return Request()
 	end
 	return Response
 end
 
-while true do
-	local Response = Request()
-	local Body = HttpService:JSONDecode(Response)
-	for i,v in pairs(Body.data) do
-		AddEmote(v.name,v.id,v.price)
-	end
-	if Body.nextPageCursor ~= nil then
-		Cursor = Body.nextPageCursor
-	else
-		break
+local function LoadEmoteFromAPIWithTurtleRequest()
+	while true do 
+		local Response = Request()
+		local Body = HttpService:JSONDecode(Response)
+		for i,v in pairs(Body.data) do
+			AddEmote(v.name,v.id,v.price)
+		end
+		if Body.nextPageCursor ~= nil then
+			Cursor = Body.nextPageCursor
+		else
+			break
+		end
 	end
 end
+
+if typeof(LoadEmoteFromRequest) ~= "function" then
+	getgenv().LoadEmoteFromRequest = LoadEmoteFromAPIWithTurtleRequest
+end
+
+LoadEmoteFromAPIWithTurtleRequest()
 
 --unreleased emotes
 AddEmote("Arm Wave",5915773155)
