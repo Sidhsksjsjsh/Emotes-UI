@@ -402,7 +402,15 @@ local function CustomEmotesSniper()
 
 	if success and result then
 		env:children(result,function(v)
-			AddEmote((typeof(v.name) == "string" and v.name or "Emote_" .. v.id),v.id)
+			--AddEmote((typeof(v.name) == "string" and v.name or "Emote_" .. v.id),v.id)
+			table.insert(Emotes,{
+						["name"] = v.name,
+						["id"] = v.id,
+						["icon"] = "rbxthumb://type=Asset&id=".. v.id .."&w=150&h=150",
+						["price"] = 0,
+						--["lastupdated"] = unix,
+						["sort"] = {}
+			})
 		end)
 	else
 		AddEmote("Arm Wave",5915773155)
