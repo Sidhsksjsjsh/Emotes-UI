@@ -389,24 +389,43 @@ local function LoadEmoteFromAPIWithTurtleRequest()
 	end
 end
 
+local function CustomEmotesSniper()
+	local success,result = pcall(function()
+		local EmoteJson = game:HttpGet("https://raw.githubusercontent.com/7yd7/sniper-Emote/refs/heads/test/EmoteSniper.json")
+		if EmoteJson and EmoteJson ~= "" then
+			local content = HttpService:JSONDecode(EmoteJson)
+			return content.data or {}
+		else
+			return nil
+		end
+	end)
+
+	if success and result then
+		env:children(result,function(v)
+			AddEmote((typeof(v.name) == "string" and v.name or "Emote_" .. v.id),v.id)
+		end)
+	else
+		AddEmote("Arm Wave",5915773155)
+		AddEmote("Head Banging",5915779725)
+		AddEmote("Face Calisthenics",9830731012)
+		AddEmote("Boogie Down",16094715433)
+		AddEmote("Free Flow",16094717768)
+		AddEmote("Breakdance/breakdown",16094819164)
+		AddEmote("Scenario",16094722305)
+		AddEmote("Swing",16094821788)
+		AddEmote("Twisted",16094825852)
+		AddEmote("Electro Shuffle",16094828990)
+	end
+end
+
 if typeof(LoadEmoteFromRequest) ~= "function" then
 	getgenv().LoadEmoteFromRequest = LoadEmoteFromAPIWithTurtleRequest
 end
 
-LoadEmoteFromAPIWithTurtleRequest()
+--LoadEmoteFromAPIWithTurtleRequest()
+CustomEmotesSniper()
 
 --unreleased emotes
-AddEmote("Arm Wave",5915773155)
-AddEmote("Head Banging",5915779725)
-AddEmote("Face Calisthenics",9830731012)
-AddEmote("Boogie Down",16094715433)
-AddEmote("Free Flow",16094717768)
-AddEmote("Breakdance/breakdown",16094819164)
-AddEmote("Scenario",16094722305)
-AddEmote("Swing",16094821788)
-AddEmote("Twisted",16094825852)
-AddEmote("Electro Shuffle",16094828990)
-
 --wait for emotes to finish loading
 
 local function EmotesLoaded()
