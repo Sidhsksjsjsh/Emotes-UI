@@ -450,7 +450,7 @@ end
 Loading:Destroy()
 
 --sorting options setup
-table.sort(Emotes,function(a,b)
+--[[table.sort(Emotes,function(a,b)
 	return a.lastupdated > b.lastupdated
 end)
 for i,v in pairs(Emotes) do
@@ -459,7 +459,7 @@ end
 
 table.sort(Emotes,function(a,b)
 	return a.lastupdated < b.lastupdated
-end)
+end)]]
 
 for i,v in pairs(Emotes) do
 	v.sort.recentlast = i
